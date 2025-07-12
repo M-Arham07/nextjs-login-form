@@ -50,7 +50,7 @@ export default function OTP_FORM({token}) {
   const { setError } = form;
    
 
-  //ALERT DIALOG:
+  //ALERT SUCCESS DIALOG:
   const [isOpen, setOpen] = useState(false);
 
   async function onSubmit(info) {

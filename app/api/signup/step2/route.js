@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import OTP from '@/server-actions/models/otpModel';
 import User from "@/server-actions/models/User";
+import GREET from "@/server-actions/Greet";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -49,7 +50,9 @@ export async function POST(request) {
        }
 
     
+       // AT THIS POINT, USER HAS BEEN CREATED SUCCESSFULLY, NOW LETS SEND A WELCOME EMAIL TO USER!
 
+       GREET(email);
        return NextResponse.json({msg:"Your account has been created successfully!"},{status:200});
        
 

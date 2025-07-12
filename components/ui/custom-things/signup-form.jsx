@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import Link  from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -103,7 +104,9 @@ export default function SignupForm({onSubmit, customError,inProgress}) {
                         Enter your details below to sign up
                     </CardDescription>
                     <CardAction>
-                        <Button variant="link">Login</Button>
+                        <Link href='/login'>
+                        <Button variant="link">Login</Button></Link>
+                        
                     </CardAction>
                 </CardHeader>
                 <CardContent>
