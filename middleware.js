@@ -28,9 +28,9 @@ export default async function middelware(request) {
 
 
    
-  // if user enteres signup page let the request continue
+  // if user enteres signup page or changepassword page let the request continue
 
-    if(path === '/signup'){
+    if(path === '/signup' || path === '/change-password'){
         return NextResponse.next();
     }
 

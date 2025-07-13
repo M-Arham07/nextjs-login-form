@@ -73,7 +73,7 @@ export default function LoginForm({ onSubmit, customError, inProgress,ShowSucces
             Enter your credentials below to login
           </CardDescription>
           <CardAction>
-            
+        
             <Button variant="link"><Link href='/signup'>Sign Up</Link></Button>
           </CardAction>
         </CardHeader>
@@ -99,8 +99,12 @@ export default function LoginForm({ onSubmit, customError, inProgress,ShowSucces
                   {...form.register("email")}
                 />
               </div>
+              
               <div className="grid gap-2 relative">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between mb-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Link href="/change-password" className="text-sm text-primary hover:underline focus:underline">Forgot password?</Link>
+                </div>
                 <Input
                   id="password"
                   type={PShow ? "text" : "password"}
@@ -109,12 +113,14 @@ export default function LoginForm({ onSubmit, customError, inProgress,ShowSucces
                   {...form.register("password")}
                 />
                 <button
-                  className="absolute right-3 top-8 text-muted-foreground"
+                  className="absolute right-3 top-10 text-muted-foreground"
                   onClick={e => { e.preventDefault(); setPShow(!PShow); }}
                   type="button"
                 >
                   {PShow ? EyeClosedIcon : EyeOpenIcon}
                 </button>
+
+                
               </div>
               <Button type="submit" className="w-full mt-4" >
                 Login
