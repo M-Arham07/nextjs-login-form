@@ -1,7 +1,7 @@
 
 // THIS FUNCTION SENDS A WELCOME EMAIL AFTER USER HAS BEEN CREATED!
 
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 
 
 const transporter = nodemailer.createTransport({

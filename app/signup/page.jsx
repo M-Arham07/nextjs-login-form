@@ -1,7 +1,6 @@
 "use client";
 import OTP_FORM from "@/components/ui/custom-things/otp-form";
 import SignupForm from "@/components/ui/custom-things/signup-form";
-import { set } from "mongoose";
 import { useEffect, useState } from "react";
 
 export default function SIGN_UP() {
