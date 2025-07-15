@@ -66,5 +66,5 @@ export default function SIGN_UP() {
   // if otpform= true, show it otherwise signup form
 
 
-  return otpform ? <OTP_FORM token={token} /> : <SignupForm onSubmit={HandleSignup} customError={errmsg} inProgress={inProgress} />
+  return otpform ? <OTP_FORM /> : <SignupForm onSubmit={HandleSignup} customError={errmsg} inProgress={inProgress} />
 }

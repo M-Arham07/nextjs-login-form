@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { redirect, useRouter } from "next/navigation";
+import LoadingDialog from "./loading-dialog"
 
-import {  
+import {
   Form,
   FormControl,
   FormDescription,
@@ -35,10 +36,10 @@ import Link from "next/link";
 import AlertDialog from "@/components/ui/custom-things/signup-sucess-alert"
 
 
-export default function OTP_FORM({token}) {
- 
-  const router=useRouter();
-  // console.log(token);
+export default function OTP_FORM() {
+
+  const router = useRouter();
+
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -48,49 +49,55 @@ export default function OTP_FORM({token}) {
   })
 
   const { setError } = form;
-   
+
+  //LOADING DIALOG:
+
+  const [inProgress,setInProgress]=useState(false);
 
   //ALERT SUCCESS DIALOG:
   const [isOpen, setOpen] = useState(false);
+  
 
   async function onSubmit(info) {
-    console.log(token)
+
     try {
+      setInProgress(true);
       const { pin } = info;
       const res = await fetch('/api/signup/step2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          token: token,
-          otp: pin
-        })
+        body: JSON.stringify({ otp: pin })
       });
 
-      const data=await res.json();
+      const data = await res.json();
 
-      if(!res.ok){ // if response isnt OK(200), throw the errmsg object received to catch block. From there it will be setted
+      if (!res.ok) { // if response isnt OK(200), throw the errmsg object received to catch block. From there it will be setted
+        setInProgress(false);
         throw new Error(data.errmsg);
       }
       // AS RESPONSE OK, NOW SHOW ALERT DIALOG SAYING ACC CREATED AND THEN REDIRECT TO LOGIN (after 2.5s)
+      setInProgress(false);
       setOpen(true)
-      setTimeout(()=>router.replace('/login'),2500);
+      setTimeout(() => router.replace('/login'), 2500);
       return;
 
 
 
     } catch (err) { // setError to err.message, which contains errmsg sent from backend!
+      setInProgress(false);
       console.log(err.message);
       setError("pin", { type: "manual", message: err.message || "Server down! Please try again later." });
       // refresh page after 2.5 seconds so it goes back to signup page!
-      setTimeout(()=>router.refresh(),2500)
+      setTimeout(() => router.refresh(), 2500)
       return;
-      
+
     }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-sm grid-rows-4 shadow-lg">
+        <LoadingDialog inProgress={inProgress} />
         <AlertDialog isOpen={isOpen} />
         <CardHeader>
           <CardTitle>Verify OTP</CardTitle>
