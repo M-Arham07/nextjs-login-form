@@ -1,30 +1,32 @@
 
-import { cookies } from "next/headers";
-import ConnectDB from "@/server-actions/ConnectDB";
-import User from "@/server-actions/models/User";
-import mongoose,{Types} from "mongoose";
-import jwt from 'jsonwebtoken';
-async function WELCOME(){
-const cookieStore=await cookies();
-const TOKEN=cookieStore.get('token')?.value; // console.log("YOUR TOKEN IS:",TOKEN); 
- if(!TOKEN){
-  return;
- }
+"use client";
+import { Button } from "@/components/ui/button";
 
- await ConnectDB();
- const {id}= jwt.decode(TOKEN) // console.log(decoded)
- const {email}=await User.findOne(new Types.ObjectId(id));
-//  console.log(email)
-return email;
+import { signOut, useSession } from "next-auth/react";
 
 
 
-}
+export default function HOME() {
+  const { data: session, status } = useSession();
 
-export default async function HOME(){
+  function handleSignout() {
+    signOut({ callbackUrl: '/login' })
+  }
+
+  console.log(session);
+
+  if (status === 'loading'){
+    return <h1>Loading.........</h1>
+  }
+
+    if (session) {
+      return (<>
+        <h1>HELLO {session.user.name}! Your email is {session.user.email}.</h1>
+        <Button onClick={handleSignout}> CLICK HERE TO SIGNOUT </Button>
+      </>)
+    }
+
+  return (<h1>YOU ARENT LOGGED IN!</h1>)
 
 
-  return <>
-  <h1>HELLO {await WELCOME()}</h1>
-  </>
 }
