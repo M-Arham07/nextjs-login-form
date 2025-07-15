@@ -3,6 +3,9 @@ import ConnectDB from './ConnectDB';
 import OTP from './models/otpModel';
 import nodemailer from 'nodemailer';
 
+// OTP HASHING:
+import bcrypt from 'bcrypt';
+
 
 const transporter = nodemailer.createTransport({
     service: process.env.SERVICE,
@@ -51,8 +54,10 @@ export default async function SEND_OTP(EMAIL) {
             /* if theres an error while creating otp, it will automatically throw an erorr that 
              will be catched by catch(err), which will reject the promise */
 
-            await OTP.create({email:EMAIL,otp:otp,expiresAt:expiry});
+             // UPDATE: WILL STORE HASHED OTPS!
+             const hashedOTP=await bcrypt.hash(otp,10);
 
+            await OTP.create({email:EMAIL,otp:hashedOTP,expiresAt:expiry});
             
             await new Promise((resolve,reject)=>{
                 transporter.sendMail(emailOptions,(err,info)=>{

@@ -29,7 +29,12 @@ export async function POST(request) {
         throw new Error("Session expired! Please try again in 10 minutes.");
        }
 
-       if(otp !== found.otp){
+       // NEW FEATURE: HASHED OTPS
+
+       // COMPARING HASHED OTP!
+       const isMatch=await bcrypt.compare(otp,found.otp)
+
+       if(!isMatch){
         throw new Error("The OTP you entered is not valid!");
 
        }

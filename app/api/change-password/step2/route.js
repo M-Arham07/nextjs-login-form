@@ -33,8 +33,12 @@ export async function POST(request) {
         // if program has passed all above checks, it means otp should exist in the collection OTPs
         // so lets compare 
 
-        if(found.otp !== otp){
-            throw new Error("The OTP you entered is not correct!")
+        // NEW FEATURE: HASHED OTPS!!
+
+        const isMatch=await bcrypt.compare(otp,found.otp);
+
+        if(!isMatch){
+            throw new Error("The OTP you entered is not correct!");
         }
 
         // if above checked is passed, it means found.otp === otp (means user gave correct otp)
